@@ -1,0 +1,31 @@
+const { Client, LocalAuth } = require('whatsapp-web.js');
+const qrcode = require('qrcode-terminal');
+
+const client = new Client({
+    authStrategy: new LocalAuth(),
+    puppeteer: { 
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'] 
+    }
+});
+
+const CHANNEL_ID = '0029VbDqsVe59PwYb3g5hP3K@newsletter';
+
+client.on('qr', (qr) => {
+    console.log('SCAN QR INI CIO!');
+    qrcode.generate(qr, { small: true });
+});
+
+client.on('ready', async () => {
+    console.log('BOT ARX SQUAD UDAH IDUP 24 JAM!');
+    
+    try {
+        await client.sendMessage(CHANNEL_ID, `⚡🔥 *ARX SQUAD BOT ONLINE!* 🔥⚡\n\nBot 24 Jam Udah Idup!\nHP Admin Boleh Mati, Bot Tetep Jalan!\n\nSiap Pantau ETERNAL & DIVINE!`);
+        console.log('TEST BERHASIL KEPOST KE SALURAN!');
+    } catch (e) {
+        console.log('Gagal posting: ' + e);
+    }
+});
+
+client.initialize();
+setInterval(() => { console.log('Bot masih idup...'); }, 60000);
